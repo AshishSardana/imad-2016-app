@@ -5,20 +5,49 @@ var path = require('path');
 var app = express();
 app.use(morgan('combined'));
 
-var articleOne = {
-    title: 'Article One | Ashish Sardana',
-    heading: 'Article One',
-    date: 'Sep 6, 2016',
-    content : `<p>
-                This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.
-            </p>
-            <p>
-                This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.
-            </p>
-            <p>
-                This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.
-            </p>`
+var articles = {
+    'article-one' : {
+        title: 'Article One | Ashish Sardana',
+        heading: 'Article One',
+        date: 'Sep 6, 2016',
+        content : `<p>
+                    This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.
+                </p>
+                <p>
+                    This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.
+                </p>
+                <p>
+                    This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.This is the content for my first acticle.
+                </p>`},
+    'article-two' : {
+        title: 'Article Two | Ashish Sardana',
+        heading: 'Article Two',
+        date: 'Sep 10, 2016',
+        content : `<p>
+                    This is the content for my Second acticle.This is the content for my Second acticle.This is the content for my Second acticle.This is the content for my Second acticle.This is the content for my Second acticle.
+                </p>
+                <p>
+                    This is the content for my Second acticle.This is the content for my Second acticle.This is the content for my Second acticle.This is the content for my Second acticle.This is the content for my Second acticle.
+                </p>
+                <p>
+                    This is the content for my Second acticle.This is the content for my Second acticle.This is the content for my Second acticle.This is the content for my Second acticle.This is the content for my Second acticle.This is the content for my Second acticle.
+                </p>`},
+    'article-three' : {
+        title: 'Article Three | Ashish Sardana',
+        heading: 'Article Three',
+        date: 'Sep 15, 2016',
+        content : `<p>
+                    This is the content for my Third acticle.This is the content for my Third acticle.This is the content for my Third acticle.This is the content for my Third acticle.This is the content for my Third acticle.This is the content for my Third acticle.
+                </p>
+                <p>
+                    This is the content for my Third acticle.This is the content for my Third acticle.This is the content for my Third acticle.This is the content for my Third acticle.This is the content for my Third acticle.
+                </p>
+                <p>
+                    This is the content for my Third acticle.This is the content for my Third acticle.This is the content for my Third acticle.This is the content for my Third acticle.This is the content for my Third acticle.
+                    }
+                </p>`}
 };
+
 function createTemplate (data) {
     var title = data.title;
     var date = data.date;
@@ -56,10 +85,11 @@ function createTemplate (data) {
         
 }
 
-
-
-app.get('/article-one', function (req, res){
-    res.send(createTemplate(articleOne));
+app.get('/;articleName', function (req, res){
+    // articleName == article-one
+    // articles[articleName] = {} content for article one
+    var articleName = req.params.articleName;
+    res.send(createTemplate(articles[articleName]));
 });
 
 app.get('/article-two', function(req, res){
