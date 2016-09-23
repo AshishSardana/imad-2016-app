@@ -85,20 +85,13 @@ function createTemplate (data) {
         
 }
 
-app.get('/;articleName', function (req, res){
+app.get('/:articleName', function (req, res){
     // articleName == article-one
     // articles[articleName] = {} content for article one
     var articleName = req.params.articleName;
     res.send(createTemplate(articles[articleName]));
 });
 
-app.get('/article-two', function(req, res){
-    res.sendFile(path.join(__dirname, 'ui', 'article-two.html'));
-});
-
-app.get('/article-three', function(req, res){
-    res.sendFile(path.join(__dirname, 'ui', 'article-three.html'));
-});
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
