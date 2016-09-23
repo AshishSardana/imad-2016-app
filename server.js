@@ -5,6 +5,18 @@ var path = require('path');
 var app = express();
 app.use(morgan('combined'));
 
+app.get('/article-one', function (req, res){
+    res.send("Article one has been requested and will be serverd");
+});
+
+app.get('/article-two', function(req, res){
+    res.send("Article two has been requested and will be serverd");
+});
+
+app.get('/article-three', function(req, res){
+    res.send("Article three has been requested and will be serverd");
+});
+
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
