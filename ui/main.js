@@ -1,9 +1,11 @@
 console.log('Loaded!');
 
 //Change the text of the main-text division
-var element = document.getElementById('main-text');
-element.innerHTML = 'New Value that is generated through javascript.';
 
+/*var element = document.getElementById('main-text');
+element.innerHTML = 'New Value that is generated through javascript.'; */
+
+//Animation of picture
 var marginLeft = 0;
 function moveRight(){
     marginLeft = marginLeft + 1;
@@ -13,3 +15,8 @@ var img = document.getElementById('img');
 img.onclick = function() {
     var interval = setInterval(moveRight, 50);
 }
+
+
+
+
+
