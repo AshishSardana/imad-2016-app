@@ -77,13 +77,34 @@ function createTemplate (data) {
                     ${content}
                     
                 </div>
+				<div>
+					<br>
+					<br>
+					<br>
+					<br>
+					<h4>
+						Comment Section
+					</h4>
+					<hr/>
+					This button <button id="counter">Click ME</button> has been clicked <span id="count">0</span> times.
+					<hr/>
+					<input type="text" id="name" placeholder="name"></input>
+					<input type="submit" id="submit_button" value="Submit"></input>
+					<ul id="namelist">
+					</ul> 
+				</div>
             </div>
         </body>
-    </html>` 
+    </html>`
         ;
     return htmlTemplate;
         
 }
+
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'ui', 'index.html'));
+});
+
 var counter = 0;
 
 app.get('/counter', function (req, res) {
@@ -91,17 +112,21 @@ app.get('/counter', function (req, res) {
   res.send(counter.toString());
 });
 
-/*app.get('/:articleName', function (req, res){
+var names = [];
+app.get('/submit-name/', function (req, res) {
+  //Get the name from the request
+  var name = req.query.name; // To do
+  names.push(name);
+  // JSON: Javascript Object Notation
+  res.send(JSON.stringify(names)); //To do
+  
+});
+
+app.get('/:articleName', function (req, res){
     // articleName == article-one
     // articles[articleName] = {} content for article one
     var articleName = req.params.articleName;
     res.send(createTemplate(articles[articleName]));
-});*/
-
-
-
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
 
 app.get('/ui/main.js', function (req, res) {
