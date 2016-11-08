@@ -143,7 +143,7 @@ app.get('/counter', function (req, res) {
   res.send(counter.toString());
 });
 
-app.get('/ui/elevatorData', function (req, res) {
+app.get('/elevatorData', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'elevatorData.html'));
 });
 
