@@ -143,9 +143,12 @@ app.get('/counter', function (req, res) {
   res.send(counter.toString());
 });
 
-var elevator = 0;
 app.get('/ui/elevatorData', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'elevatorData.html'));
+});
+
+app.get('/ui/elevatorScript.js', function (req, res) {
+  res.sendFile(path.join(__dirname, 'ui', 'elevatorScript.js'));
 });
 
 var names = [];
