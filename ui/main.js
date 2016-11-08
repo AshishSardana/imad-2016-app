@@ -39,7 +39,7 @@ button.onclick = function(){
 	}
 	
     //Make the request
-	request.open('GET', 'http://ashishsardana.imad.hasura-app.io/counter', true);
+	request.open('GET', 'https://api.thingspeak.com/channels/179562/fields/1/last.txt', true);
 	request.send(null);
     
 };
