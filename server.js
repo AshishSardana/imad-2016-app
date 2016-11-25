@@ -2,12 +2,7 @@ var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
 var Pool = require('pg').Pool;
-var crypto;
-try {
-  crypto = require('crypto');
-} catch (err) {
-  console.log('crypto support is disabled!');
-}
+var crypto = require('crypto');
 
 // by default the pool will use the same environment variables
 // as psql, pg_dump, pg_restore etc:
@@ -130,7 +125,7 @@ function hash (input, salt){
 }
 
 app.get('/hash/:input', function(req,res){
-    var hashedString = hash(req.params.imput, 'this-is-some-random-string');
+    var hashedString = hash(req.params.input, 'this-is-some-random-string');
     res.send(hashedString);
 });
 
