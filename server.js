@@ -122,7 +122,6 @@ function createTemplate (data) {
 
 function hash (input, salt){
     //Creating a hash
-    salt = crypto.randomBytes(128).toString('hex');
     var hashed = crypto.pbkdf2Sync(input, salt, 10000, 512, 'sha512');
     return ["pbkdf2", "10000", salt, hashed.toString('hex')].join('$');
 }
@@ -148,6 +147,41 @@ app.post('/create-user', function(req,res){
        }
     });
 });
+
+app.post('/login', function(req,res){
+     
+    var username = req.body.username;
+    var password = req.body.password;
+    
+    pool.query('SELECT * FROM "user" WHERE username = $1', [username], function(req, res){
+        if(err){
+           res.status(500).send(err.toString());
+       } 
+       else{
+           if(res.rows.length === 0){
+               res.send(403).send('username does not exist.');
+           }
+           else{
+               //Matching the password
+               var dbString = result.rows[0].password;
+               var salt = dbString.split('$')[2];
+               var hashedPassword = hash(password, salt); //Creating a hash based on the password submitted and the original salt.
+               if(hashedPassword === dbString){
+                   res.send('Credentials are correct');
+                   
+                   //Set a session
+                   
+               }
+               else {
+                   res.send(403).send('username/password is incorrect')
+               }
+           }
+           
+       }
+    });
+});
+
+
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
