@@ -3,6 +3,7 @@ var morgan = require('morgan');
 var path = require('path');
 var Pool = require('pg').Pool;
 var crypto = require('crypto');
+var bodyParser = require('body-parser');
 
 // by default the pool will use the same environment variables
 // as psql, pg_dump, pg_restore etc:
@@ -19,6 +20,7 @@ var config = {
 
 var app = express();
 app.use(morgan('combined'));
+app.use(bodyParser.json()); //If content type is JSON, load it into req.body
 
 //Not used anymore
 var articles = {
@@ -129,7 +131,22 @@ app.get('/hash/:input', function(req,res){
     res.send(hashedString);
 });
 
-
+app.post('/create-user', function(req,res){
+    //username, password
+    //Format of data incoming is JSON. Req.body is json and we'll find keywords
+    var username = req.body.username;
+    var password = req.body.password;
+    var salt = crypto.randomBytes(128).toString('hex');
+    var dbString = hash(password, salt);
+    pool.query('INSERT INTO "user" (username,password) VALUES ($1, $2)', [username, dbString], function(req, res){
+        if(err){
+           res.status(500).send(err.toString());
+       } 
+       else{
+           res.send('User successfully created: ' + username);
+       }
+    });
+});
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
