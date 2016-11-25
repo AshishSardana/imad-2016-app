@@ -2,7 +2,12 @@ var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
 var Pool = require('pg').Pool;
-var crypto = require('crypto');
+var crypto;
+try {
+  crypto = require('crypto');
+} catch (err) {
+  console.log('crypto support is disabled!');
+}
 
 // by default the pool will use the same environment variables
 // as psql, pg_dump, pg_restore etc:
