@@ -2,6 +2,7 @@ var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
 var Pool = require('pg').Pool;
+var crypto = require('crypto');
 
 // by default the pool will use the same environment variables
 // as psql, pg_dump, pg_restore etc:
@@ -19,6 +20,7 @@ var config = {
 var app = express();
 app.use(morgan('combined'));
 
+//Not used anymore
 var articles = {
     'article-one' : {
         title: 'Article One | Ashish Sardana',
@@ -62,6 +64,7 @@ var articles = {
                 </p>`}
 };
 
+//Not used anymore
 function createTemplate (data) {
     var title = data.title;
     var date = data.date;
@@ -114,6 +117,18 @@ function createTemplate (data) {
     return htmlTemplate;
         
 }
+
+function hash (input, salt){
+    //Creating a hash
+    var hashed = crypto.pbkdf2Sync(input, salt, 10000, 512, 'sha512');
+    return hashed.toString('hex');
+}
+
+app.get('/hash/:input', function(req,res){
+    var hashedString = hash(req.params.imput, 'this-is-some-random-string');
+    res.send(hashedString);
+});
+
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
