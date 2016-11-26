@@ -4,6 +4,7 @@ var path = require('path');
 var Pool = require('pg').Pool;
 var crypto = require('crypto');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 // by default the pool will use the same environment variables
 // as psql, pg_dump, pg_restore etc:
@@ -21,6 +22,11 @@ var config = {
 var app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json()); //If content type is JSON, load it into req.body
+app.use(session({
+    secret: 'someRandomSecretValue', //Encrypt cookies with
+    cookie: { maxAge: 1000*60*60*24*30 }
+    
+}));
 
 //Not used anymore
 var articles = {
@@ -167,13 +173,17 @@ app.post('/login', function(req,res){
                var salt = dbString.split('$')[2];
                var hashedPassword = hash(password, salt); //Creating a hash based on the password submitted and the original salt.
                if(hashedPassword === dbString){
-                   res.send('Credentials are correct');
                    
-                   //Set a session
+                   //Set the session
+                   req.session.auth = {userId: result.rows[0].id};
+                   //Setting a cookie with a session id
+                   //Internally on the server side, it maps the session id to an object
+                   // { auth: {userId }}
+                   res.send('Credentials are correct');
                    
                }
                else {
-                   res.send(403).send('username/password is incorrect')
+                   res.send(403).send('username/password is incorrect');
                }
            }
            
@@ -181,6 +191,14 @@ app.post('/login', function(req,res){
     });
 });
 
+app.get('check-login', function(req, res){
+    if(req.session && req.session.auth && req.session.auth.userId){
+        res.send('You are logged in as: ' + req.session.auth.userId.toString());
+    }
+    else{
+        res.send('You are not logged in.');
+    }
+});
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
