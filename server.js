@@ -28,7 +28,6 @@ app.use(session({
     
 }));
 
-/*
 //Not used anymore
 var articles = {
     'article-one' : {
@@ -73,8 +72,6 @@ var articles = {
                 </p>`}
 };
 
-*/
-/*
 //Not used anymore
 function createTemplate (data) {
     var title = data.title;
@@ -128,7 +125,6 @@ function createTemplate (data) {
     return htmlTemplate;
         
 }
-*/
 
 function hash (input, salt){
     //Creating a hash
